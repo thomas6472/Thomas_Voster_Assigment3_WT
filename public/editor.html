@@ -9,24 +9,28 @@
         <link rel="stylesheet" href="../css/editor.css">
     </head>
     <body>
+        <!-- Navbar of the application -->
         <nav class="navbar">
             <img src="images/logo.png" style="width: 10%; position: absolute; top: 20%;" class="logo" alt="">
             <ul class="links-container">
-                <li class="link-item"><a href="/" class="link">home</a></li>
-                <li class="link-item"><a href="/editor" class="link">editor</a></li>
+                <li class="link-item"><a href="/" class="link">Home</a></li>
+                <li class="link-item"><a href="/editor" class="link">New</a></li>
             </ul>
         </nav>
 
+        <!-- Banner of the post -->
         <div class="banner">
             <input type="file" accept="image/*" id="banner-upload" hidden>
             <label for="banner-upload" class="banner-upload-btn"><img src="../images/upload-solid.svg" alt="upload banner"></label>
         </div>
 
+        <!-- Textarea for the edition of a post -->
         <div class="blog">
             <textarea type="text" class="title" placeholder="Blog title..."></textarea>
             <textarea type="text" class="article" placeholder="Start writing here..."></textarea>
         </div>
 
+        <!-- Button to publish a post or upload an image on article -->
         <div class="blog-options">
             <button class="btn dark publish-btn">publish</button>
             <input type="file" accept="image/*" id="image-upload" hidden>

@@ -1,10 +1,14 @@
+// Get the ID of the current page
 let blogId = decodeURI(location.pathname.split("/").pop());
 
+// Get composants of the HTML page and assign them to variables
 const banner = document.querySelector('.banner');
 const blogTitle = document.querySelector('.title');
 const titleTag = document.querySelector('title');
 const blogArticle = document.querySelector('.article');
+let titlePage = document.getElementById('ttl');
 
+// Function to get datas of a post depending of the blogID and print them on the front page
 function getPost(blogId) {
     fetch('/getpost', {
         method: 'POST',
@@ -19,15 +23,18 @@ function getPost(blogId) {
         .then(res => {
             banner.style.backgroundImage = `url(${res.banner})`;
             titleTag.innerHTML += blogTitle.innerHTML = res.title;
+            titlePage = res.title;
             addArticle(blogArticle, res.description);
         });
 }
 
+// Call the function to get data of a post
 getPost(blogId);
 
+
+// function to parse description of articles
 const addArticle = (ele, data) => {
     data = data.split("\n").filter(item => item.length);
-    // console.log(data);
 
     data.forEach(item => {
         // check for heading
@@ -64,6 +71,7 @@ const addArticle = (ele, data) => {
     })
 }
 
+// Function to delete a post from DB
 function deletePost() {
     fetch('/deletepost', {
         method: 'POST',
@@ -80,7 +88,9 @@ function deletePost() {
     });
 }
 
+// Function to edit data of a post from DB
 function editPost() {
     let btn = document.getElementById('edit-button');
-    btn.href = `${blogId}/editor`;
+    let docName = decodeURI(blogId);
+    btn.href = `http://localhost:3000/${docName}/editor`;
 }

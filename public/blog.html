@@ -4,27 +4,31 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE-edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Blog</title>
+        <title id="ttl"></title>
         <link rel="stylesheet" href="css/home.css">
         <link rel="stylesheet" href="css/editor.css">
         <link rel="stylesheet" href="css/blog.css">
     </head>
     <body>
+        <!-- Navbar of the application -->
         <nav class="navbar">
             <img src="images/logo.png" style="width: 10%; position: absolute; top: 20%;" class="logo" alt="">
             <ul class="links-container">
-                <li class="link-item"><a href="/" class="link">home</a></li>
-                <li class="link-item"><a href="/editor" class="link">editor</a></li>
+                <li class="link-item"><a href="/" class="link">Home</a></li>
+                <li class="link-item"><a href="/editor" class="link">New</a></li>
             </ul>
         </nav>
 
+        <!-- Banner of the post -->
         <div class="banner"></div>
 
+        <!-- Button for delete and update a post -->
         <div class="update_button">
             <a class="btn green" onclick="editPost()" id="edit-button">Update</a>
             <a href="/" onclick="deletePost()" class="btn red">Delete</a>
         </div>
 
+        <!-- Composants of the title and the article -->
         <div class="blog">
             <h1 class="title"></h1>
             <div class="article">
@@ -33,6 +37,7 @@
 
         <h1 class="sub-heading">Read more</h1>
 
+        <!-- lists of lasts posts -->
         <section class="blogs-section"></section>
 
         <script src="js/home.js"></script>

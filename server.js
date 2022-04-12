@@ -1,3 +1,4 @@
+// import all dependencies needed
 const express = require('express');
 const path = require('path');
 const fileupload = require('express-fileupload');
@@ -6,12 +7,15 @@ var bodyParser = require('body-parser');
 
 require("dotenv").config();
 
+// Initialize th path
 let initial_path = path.join(__dirname, "public");
 
+// Initialize path
 const app = express();
 app.use(express.static(initial_path));
 app.use(fileupload());
 
+// Connect Mongoose
 mongoose.connect(
     process.env.MONGODB_URI,
     {
@@ -20,6 +24,7 @@ mongoose.connect(
     }
 );
 
+// Create a schema for post
 const post = new mongoose.Schema({
     name: {
         type: String,
@@ -36,25 +41,20 @@ const post = new mongoose.Schema({
     banner: String
 });
 
+// Define the schema as a model
 const Posts = mongoose.model('Posts', post);
 
-/*const pst = new Posts({
-    name: "test",
-    title: "test",
-    description: "test"
-});*/
-
-//pst.save().then(() => console.log("One entry added"));
-//Posts.deleteMany({name: "test"}).then(console.log("One entry deleted"));
-
+// For the header of fetch
 app.use(bodyParser.json({
     extended: true
 }));
 
+// Redirect to home page
 app.get('/', (req, res) => {
     res.sendFile(path.join(initial_path, "home.html"));
 });
 
+// Redirect to editor page
 app.get('/editor', (req, res) => {
     res.sendFile(path.join(initial_path, "editor.html"));
 })
@@ -81,6 +81,7 @@ app.post('/upload', (req, res) => {
     })
 })
 
+// Create a post on the DB
 app.post('/createpost', (req, res) => {
 
     const pst = new Posts({
@@ -94,21 +95,25 @@ app.post('/createpost', (req, res) => {
     res.json(200);
 })
 
+// Get data of a post on DB
 app.post('/getpost', (req, res) => {
     const pst = Posts.findOne({name: req.body.name}).exec();
     pst.then(function (doc) {res.json(doc)});
 })
 
+// Get data of all posts of the DB
 app.get('/getallposts', (req, res) => {
     const psts = Posts.find().exec();
     psts.then(function (doc) {res.json(doc)});
 })
 
+// Delete a post on DB
 app.post('/deletepost', (req, res) => {
     Posts.deleteOne({name: req.body.name}).then(console.log("One post deleted"));
     res.json(200);
 })
 
+// Update a post on DB
 app.post('/updatepost', (req, res) => {
 
     Posts.findOneAndUpdate({name: req.body.name}, {
@@ -120,18 +125,23 @@ app.post('/updatepost', (req, res) => {
     res.json(200);
 })
 
+// Redirect to a post page
 app.get("/:blog", (req, res) => {
     res.sendFile(path.join(initial_path, "blog.html"));
 })
 
+// Redirect to page of edition of a post
 app.get("/:blog/editor", (req, res) => {
+    console.log("test");
     res.sendFile(path.join(initial_path, "editor.html"));
 })
 
+// Return if request fail
 app.use((req, res) => {
     res.json("404");
 })
 
+// Port to listen
 app.listen("3000", () => {
     console.log('listening.....');
 })

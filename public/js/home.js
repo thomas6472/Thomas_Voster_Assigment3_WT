@@ -1,5 +1,7 @@
+// Get the composant "blogs-section" and assign it to a variable
 const blogSection = document.querySelector('.blogs-section');
 
+// Function to get all posts on the DB and create posts on home page
 function getAllPosts() {
     fetch('/getallposts', {
         method: 'GET',
@@ -9,14 +11,17 @@ function getAllPosts() {
         }
         }).then(res => res.json())
         .then(res => {
-            for (let i = 0; i < res.length; i++) {
-                if (res[i].name != decodeURI(location.pathname.split("/").pop())) createBlog(res[i]);
+            for (let i = (res.length - 1); i >= 0; i--) {
+                // Check if the post is print on the page and print only the ten lasts posts
+                if (res[i].name != decodeURI(location.pathname.split("/").pop()) && (res.length - i) < 11) createBlog(res[i]);
             }
         });
 }
 
+// Call the function to get all posts
 getAllPosts();
 
+// Function to create a post on footer of the page
 const createBlog = (blog) => {
     blogSection.innerHTML += `
     <div class="blog-card">

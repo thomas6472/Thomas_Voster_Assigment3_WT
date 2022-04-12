@@ -1,9 +1,8 @@
+// Get composants from HTML file and assign them to variables
 const blogTitleField = document.querySelector('.title');
 const articleField = document.querySelector('.article');
 let blogId = location.pathname.split("/");
-blogId.shift();
 
-// banner
 const bannerImage = document.querySelector('#banner-upload');
 const banner = document.querySelector(".banner");
 let bannerPath;
@@ -11,10 +10,15 @@ let bannerPath;
 const publishBtn = document.querySelector('.publish-btn');
 const uploadInput = document.querySelector('#image-upload');
 
+// Call shift() to delete the first element of blogId
+blogId.shift();
+
+// Call function upload when upload icon click
 bannerImage.addEventListener('change', () => {
     uploadImage(bannerImage, "banner");
 })
 
+// function to upload an image from PC to folder "uploads/"
 const uploadImage = (uploadFile, uploadType) => {
     const [file] = uploadFile.files;
     if(file && file.type.includes("image")){
@@ -38,34 +42,32 @@ const uploadImage = (uploadFile, uploadType) => {
     }
 }
 
+// Call function upload when upload icon click
 uploadInput.addEventListener('change', () => {
     uploadImage(uploadInput, "image");
 })
 
+// function to add an image to the description of an article
 const addImage = (imagepath, alt) => {
     let curPos = articleField.selectionStart;
     let textToInsert = `\r![${alt}](${imagepath})\r`;
     articleField.value = articleField.value.slice(0, curPos) + textToInsert + articleField.value.slice(curPos);
 }
 
-let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
+// Function to publish an article
 publishBtn.addEventListener('click', () => {
+    // Check if the post has a title and a description
     if(articleField.value.length && blogTitleField.value.length){
         let docName;
 
         if (blogId[0] == 'editor') {
-            // generating id
-            let letters = 'abcdefghijklmnopqrstuvwxyz';
+            // generating id of the post
             let blogTitle = blogTitleField.value.split(" ").join("-");
-            let id = '';
-            for(let i = 0; i < 4; i++){
-                id += letters[Math.floor(Math.random() * letters.length)];
-            }
 
             // setting up docName
             docName = `${blogTitle}`;
 
+            // request to server to create a post
             fetch('/createpost', {
                 method: 'POST',
                 headers: {
@@ -79,11 +81,16 @@ publishBtn.addEventListener('click', () => {
                     banner: bannerPath
                 })
             }).then(res => res.json())
-            .then(res => console.log(res));
+            .then(res => {
+                console.log(res);
+                // redirect to home page
+                location.href = '/';
+            });
         }
         else {
             docName = decodeURI(blogId[0]);
 
+            // Make a request to server to update data of a post
             fetch('/updatepost', {
                 method: 'POST',
                 headers: {
@@ -105,6 +112,7 @@ publishBtn.addEventListener('click', () => {
     }
 })
 
+// Function to get information of the post on edit post page
 if (blogId[0] != "editor") {
     fetch('/getpost', {
         method: 'POST',
