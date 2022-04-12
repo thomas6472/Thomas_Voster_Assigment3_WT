@@ -92,5 +92,5 @@ function deletePost() {
 function editPost() {
     let btn = document.getElementById('edit-button');
     let docName = decodeURI(blogId);
-    btn.href = `${docName}/editor`;
+    btn.href = `https://assignment3-bsch-wt.herokuapp.com/${docName}/editor`;
 }
