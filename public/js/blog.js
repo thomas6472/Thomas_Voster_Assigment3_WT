@@ -92,5 +92,5 @@ function deletePost() {
 function editPost() {
     let btn = document.getElementById('edit-button');
     let docName = decodeURI(blogId);
-    btn.href = `http://localhost:3000/${docName}/editor`;
+    btn.href = `${docName}/editor`;
 }
